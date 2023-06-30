@@ -1,0 +1,15 @@
+﻿.post-title {
+    font-size: 40px;
+    font-weight: bold;
+    padding: 20px 29px 10px 20px;
+}
+
+.post-introduction {
+    font-size: 15px;
+    color: gray;
+    padding: 0px 20px 20px 20px;
+}
+
+.post-body-text {
+    padding: 20px;
+}

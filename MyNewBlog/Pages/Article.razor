@@ -1,0 +1,33 @@
+﻿@page "/article/{Id:int}"
+@inject IConfiguration Configuration;
+
+<PageTitle>Article</PageTitle>
+
+
+@if (_post is not null)
+{
+	<div class="container">
+		<div class="row">
+			<div class="col-9">
+				<img class="w-100" height="200" src="img/articleMainImages/@_post.ImageName" alt="@_post.ImageName" />
+				<h1 class="post-title">@_post.Title</h1>
+				<h3 class="post-introduction">@_post.Introduction</h3>
+				<p class="post-body-text">@((MarkupString)_post.Body)</p>
+			</div>
+			<div class="col-3"></div>
+		</div>
+	</div>
+}
+
+@code {
+	[Parameter] public int Id { get; set; }
+	private AppDbContext? _context;
+	private Post? _post;
+
+	protected override void OnInitialized()
+	{
+		_context = new AppDbContext(Configuration);
+
+		_post = _context.Posts.FirstOrDefault(x => x.Id == Id);
+	}
+}

@@ -1,0 +1,62 @@
+﻿@page "/"
+@inject IConfiguration Configuration;
+
+<PageTitle>My Blog</PageTitle>
+
+<div class="container">
+	@if (_posts is not null)
+	{
+		@foreach (var post in _posts)
+		{
+			<a href="/article/@post.Id">
+				<div class="row">
+					<div class="col-sm-4">
+						<img class="w-100" height="200" src="img/articleMainImages/@post.ImageName" alt="@post.ImageName"/>
+					</div>
+					<div class="col-sm-8 post-front-page">
+						<h1>@post.Title</h1>
+						<p>@post.Introduction</p>
+					</div>
+				</div>
+			</a>
+
+			<hr />
+			<br />
+		}
+	}
+
+</div>
+
+@code
+{
+	private AppDbContext? _context;
+	private List<Post>? _posts;
+
+	protected override async Task OnInitializedAsync()
+	{
+		_context = new AppDbContext(Configuration);
+
+		await SeedDatabaseAsync(false);
+
+		_posts = _context.Posts.AsNoTracking().ToList();
+	}
+
+	private async Task SeedDatabaseAsync(bool reseedDataBase)
+	{
+		if (_context is null) return;
+
+		if (!reseedDataBase) return;
+
+		// Clear the Posts in the database
+		_context.Posts.RemoveRange(_context.Posts);
+
+		var blogs = PostCreator.GetPosts(3).ToList();
+		foreach (var post in blogs)
+		{
+			post.Id = 0;
+		}
+
+		await _context.Posts.AddRangeAsync(blogs);
+		await _context.SaveChangesAsync();
+	}
+}
