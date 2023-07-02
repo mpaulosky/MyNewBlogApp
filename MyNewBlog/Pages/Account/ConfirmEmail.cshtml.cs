@@ -1,5 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
+
 #nullable disable
 
 
@@ -20,6 +21,7 @@ public class ConfirmEmailModel : PageModel
 	/// </summary>
 	[TempData]
 	public string StatusMessage { get; set; }
+
 	public async Task<IActionResult> OnGetAsync(string userId, string code)
 	{
 		if (userId == null || code == null)

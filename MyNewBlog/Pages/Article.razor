@@ -1,5 +1,9 @@
 ﻿@page "/article/{Id:int}"
-@inject IConfiguration Configuration;
+@using System.Security.Claims
+
+@inject AuthenticationStateProvider AuthProvider
+@inject SignInManager<BlogUser> SignInManager
+@inject AppDbContext Context;
 
 <PageTitle>Article</PageTitle>
 
@@ -9,25 +13,94 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-9">
-				<img class="w-100" height="200" src="img/articleMainImages/@_post.ImageName" alt="@_post.ImageName" />
+				<img class="w-100" height="200" src="img/articleMainImages/@_post.ImageName" alt="@_post.ImageName"/>
 				<h1 class="post-title">@_post.Title</h1>
 				<h3 class="post-introduction">@_post.Introduction</h3>
 				<p class="post-body-text">@((MarkupString)_post.Body)</p>
+				<hr/>
+				<div class="add-comment-container w-100">
+					<h3>Add Comment</h3>
+
+					@if (SignInManager.IsSignedIn(CurrentUser))
+					{
+						<EditForm Model="@_commentModel" OnValidSubmit="@AddComment">
+							<div class="form-group">
+								<InputText aria-label="Comment" class="form-control form-control-lg mb-3" @bind-Value="@_commentModel.CommentText"/>
+							</div>
+							<div class="form-group">
+								<button type="submit" class="form-control btn btn-primary">Add Comment</button>
+							</div>
+						</EditForm>
+					}
+					else
+					{
+						<p>You must be logged in to add a comment.</p>
+					}
+				</div>
+				<div class="show-comments-container">
+					<h3>Comments</h3>
+					@if (_post.Comments!.Count > 0)
+					{
+						@foreach (var comment in _post.Comments)
+						{
+							<div class="comment-container">
+								<div class="comment-header">@comment.Created.ToString("d") | @comment.BlogUser.DisplayName</div>
+								<p class="comment-body">@comment.CommentText</p>
+								<hr/>
+							</div>
+						}
+					}
+					else
+					{
+						<p>No comments yet.</p>
+					}
+				</div>
 			</div>
+
 			<div class="col-3"></div>
 		</div>
 	</div>
 }
 
 @code {
-	[Parameter] public int Id { get; set; }
-	private AppDbContext? _context;
+
+	[Parameter]
+	public int Id { get; set; }
+
 	private Post? _post;
+	private Comment _commentModel = new();
+	private ClaimsPrincipal CurrentUser { get; set; } = new();
+	private string? UserId { get; set; }
 
-	protected override void OnInitialized()
+	protected override async Task OnInitializedAsync()
 	{
-		_context = new AppDbContext(Configuration);
+		await GetCurrentUser();
 
-		_post = _context.Posts.FirstOrDefault(x => x.Id == Id);
+		_post = await Context.Posts
+			.Where(x => x.Id == Id)
+			.Include(x => x.Comments)!
+			.ThenInclude(b => b.BlogUser)
+			.FirstOrDefaultAsync();
 	}
+
+	private async Task GetCurrentUser()
+	{
+		var authState = await AuthProvider.GetAuthenticationStateAsync();
+		CurrentUser = authState.User;
+		if (SignInManager.IsSignedIn(CurrentUser))
+		{
+			UserId = CurrentUser.FindFirstValue(ClaimTypes.NameIdentifier);
+		}
+	}
+
+	private async Task AddComment()
+	{
+		_commentModel.PostId = Id;
+		_commentModel.BlogUserId = UserId ?? "";
+
+		Context!.Comments.Add(_commentModel);
+		await Context.SaveChangesAsync();
+		_commentModel = new();
+	}
+
 }

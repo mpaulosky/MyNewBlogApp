@@ -17,12 +17,12 @@
 				<span asp-validation-for="Input.FirstName" class="text-danger"></span>
 			</div>
 			<div class="form-floating mb-3">
-				<input asp-for="Input.LastName" class="form-control" aria-required="true" />
+				<input asp-for="Input.LastName" class="form-control" aria-required="true"/>
 				<label asp-for="Input.LastName"></label>
 				<span asp-validation-for="Input.LastName" class="text-danger"></span>
 			</div>
 			<div class="form-floating mb-3">
-				<input asp-for="Input.DisplayName" class="form-control" aria-required="true" />
+				<input asp-for="Input.DisplayName" class="form-control" aria-required="true"/>
 				<label asp-for="Input.DisplayName"></label>
 				<span asp-validation-for="Input.DisplayName" class="text-danger"></span>
 			</div>
@@ -40,7 +40,7 @@
 				<input asp-for="Input.ConfirmPassword" class="form-control" autocomplete="new-password" aria-required="true"/>
 				<label asp-for="Input.ConfirmPassword"></label>
 				<span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
-			</div> 
+			</div>
 			<button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary mb-3">Register</button>
 		</form>
 	</div>
@@ -49,5 +49,5 @@
 </div>
 
 @section Scripts {
-	<partial name="_ValidationScriptsPartial" />
+	<partial name="_ValidationScriptsPartial"/>
 }

@@ -1,20 +1,28 @@
 ﻿namespace MyNewBlog.Data;
 
-public class AppDbContext : DbContext
+public class AppDbContext : IdentityDbContext<BlogUser>
 {
-	private readonly IConfiguration _configuration;
-
-	public AppDbContext(IConfiguration configuration)
+	public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
 	{
-		_configuration = configuration;
 	}
 
-	protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+	protected override void OnModelCreating(ModelBuilder builder)
 	{
-		base.OnConfiguring(optionsBuilder);
-		optionsBuilder.UseSqlServer(_configuration.GetConnectionString("BlogDbConnection"));
+		base.OnModelCreating(builder);
+
+		builder.Entity<Comment>()
+			.HasOne(c => c.BlogUser)
+			.WithMany(u => u.Comments)
+			.HasForeignKey(c => c.BlogUserId)
+			.IsRequired();
+
+		builder.Entity<Comment>()
+			.HasOne(c => c.Post)
+			.WithMany(u => u.Comments)
+			.HasForeignKey(c => c.PostId)
+			.IsRequired();
 	}
 
 	public DbSet<Post> Posts { get; set; }
-
+	public DbSet<Comment> Comments { get; set; }
 }

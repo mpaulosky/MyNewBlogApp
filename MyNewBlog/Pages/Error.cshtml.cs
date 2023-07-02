@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 
 namespace MyNewBlog.Pages;
+
 [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
 [IgnoreAntiforgeryToken]
 public class ErrorModel : PageModel

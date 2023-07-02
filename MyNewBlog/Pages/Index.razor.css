@@ -1,15 +1,15 @@
 ﻿
 .post-front-page h1 {
-    font-size: 40px;
-    font-weight: bold;
-    color: black;
+  font-size: 40px;
+  font-weight: bold;
+  color: black;
 }
 
 .post-front-page p {
-    font-size: 15px;
-    color: black;
+  font-size: 15px;
+  color: black;
 }
 
 a {
-    text-decoration: none;
+  text-decoration: none;
 }

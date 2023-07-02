@@ -18,4 +18,5 @@ public class Post
 	public string Author { get; set; } = "";
 	public DateTimeOffset Created { get; set; } = DateTimeOffset.UtcNow;
 	public string ImageName { get; set; } = "";
+	public ICollection<Comment>? Comments { get; set; }
 }

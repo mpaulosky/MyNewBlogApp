@@ -1,5 +1,6 @@
 ﻿@page "/"
-@inject IConfiguration Configuration;
+
+@inject AppDbContext _context;
 
 <PageTitle>My Blog</PageTitle>
 
@@ -20,8 +21,8 @@
 				</div>
 			</a>
 
-			<hr />
-			<br />
+			<hr/>
+			<br/>
 		}
 	}
 
@@ -29,13 +30,10 @@
 
 @code
 {
-	private AppDbContext? _context;
 	private List<Post>? _posts;
 
 	protected override async Task OnInitializedAsync()
 	{
-		_context = new AppDbContext(Configuration);
-
 		await SeedDatabaseAsync(false);
 
 		_posts = _context.Posts.AsNoTracking().ToList();
@@ -47,7 +45,7 @@
 
 		if (!reseedDataBase) return;
 
-		// Clear the Posts in the database
+	// Clear the Posts in the database
 		_context.Posts.RemoveRange(_context.Posts);
 
 		var blogs = PostCreator.GetPosts(3).ToList();

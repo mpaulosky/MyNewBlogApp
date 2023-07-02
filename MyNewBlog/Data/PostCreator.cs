@@ -1,9 +1,7 @@
 namespace MyNewBlog.Data;
 
-
 public static class PostCreator
 {
-
 	/// <summary>
 	///   Gets a new post.
 	/// </summary>
@@ -50,11 +48,11 @@ public static class PostCreator
 
 		return new Faker<Post>()
 			.RuleFor(x => x.Id, f => f.Random.Int(0, 100))
-				.RuleFor(c => c.Title, f => f.Lorem.Sentence(10))
-				.RuleFor(x => x.Introduction, f => f.Lorem.Paragraph(1))
-				.RuleFor(x => x.Body, f => f.Lorem.Paragraph(4))
-				.RuleFor(x => x.Author, f => f.Internet.UserName())
-				.RuleFor(x => x.Created, f => f.Date.Past())
-				.UseSeed(seed);
+			.RuleFor(c => c.Title, f => f.Lorem.Sentence(10))
+			.RuleFor(x => x.Introduction, f => f.Lorem.Paragraph(1))
+			.RuleFor(x => x.Body, f => f.Lorem.Paragraph(4))
+			.RuleFor(x => x.Author, f => f.Internet.UserName())
+			.RuleFor(x => x.Created, f => f.Date.Past())
+			.UseSeed(seed);
 	}
 }

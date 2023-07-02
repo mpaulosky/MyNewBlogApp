@@ -1,5 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
+
 #nullable disable
 
 namespace MyNewBlog.Pages.Account;
@@ -54,17 +55,20 @@ public class RegisterModel : PageModel
 	public class InputModel
 	{
 		[Required]
-		[StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 1)]
+		[StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.",
+			MinimumLength = 1)]
 		[Display(Name = "First Name")]
 		public string FirstName { get; set; }
 
 		[Required]
-		[StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 1)]
+		[StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.",
+			MinimumLength = 1)]
 		[Display(Name = "Last Name")]
 		public string LastName { get; set; }
 
 		[Required]
-		[StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 1)]
+		[StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.",
+			MinimumLength = 1)]
 		[Display(Name = "Display Name")]
 		public string DisplayName { get; set; }
 
@@ -82,7 +86,8 @@ public class RegisterModel : PageModel
 		///     directly from your code. This API may change or be removed in future releases.
 		/// </summary>
 		[Required]
-		[StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
+		[StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.",
+			MinimumLength = 6)]
 		[DataType(DataType.Password)]
 		[Display(Name = "Password")]
 		public string Password { get; set; }
@@ -146,6 +151,7 @@ public class RegisterModel : PageModel
 					return LocalRedirect(returnUrl);
 				}
 			}
+
 			foreach (var error in result.Errors)
 			{
 				ModelState.AddModelError(string.Empty, error.Description);
@@ -165,8 +171,8 @@ public class RegisterModel : PageModel
 		catch
 		{
 			throw new InvalidOperationException($"Can't create an instance of '{nameof(BlogUser)}'. " +
-																					$"Ensure that '{nameof(BlogUser)}' is not an abstract class and has a parameterless constructor, or alternatively " +
-																					$"override the register page in /Areas/Identity/Pages/Account/Register.cshtml");
+			                                    $"Ensure that '{nameof(BlogUser)}' is not an abstract class and has a parameterless constructor, or alternatively " +
+			                                    $"override the register page in /Areas/Identity/Pages/Account/Register.cshtml");
 		}
 	}
 
@@ -176,6 +182,7 @@ public class RegisterModel : PageModel
 		{
 			throw new NotSupportedException("The default UI requires a user store with email support.");
 		}
+
 		return (IUserEmailStore<BlogUser>)_userStore;
 	}
 }

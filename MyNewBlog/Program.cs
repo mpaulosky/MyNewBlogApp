@@ -1,13 +1,15 @@
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration
-	.GetConnectionString("MyNewBlogContextConnection") ?? throw new InvalidOperationException("Connection string 'MyNewBlogContextConnection' not found.");
+	                       .GetConnectionString("BlogDbConnection") ??
+                       throw new InvalidOperationException("Connection string 'BlogDbConnection' not found.");
 
-builder.Services.AddDbContext<MyNewBlogContext>(options => options.UseSqlServer(connectionString));
+builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(connectionString));
 
 builder.Services.AddDefaultIdentity<BlogUser>(options => options.SignIn.RequireConfirmedAccount = true)
-	.AddEntityFrameworkStores<MyNewBlogContext>();
+	.AddEntityFrameworkStores<AppDbContext>();
 
 // Add services to the container.
+builder.Services.AddScoped<AppDbContext>();
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 
@@ -28,6 +30,8 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseAuthentication();
+
+app.UseAuthorization();
 
 app.MapBlazorHub();
 

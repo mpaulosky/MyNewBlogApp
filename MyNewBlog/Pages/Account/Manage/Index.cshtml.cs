@@ -1,5 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
+
 #nullable disable
 
 namespace MyNewBlog.Pages.Account.Manage;
@@ -44,17 +45,20 @@ public class IndexModel : PageModel
 	public class InputModel
 	{
 		[Required]
-		[StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 1)]
+		[StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.",
+			MinimumLength = 1)]
 		[Display(Name = "First Name")]
 		public string FirstName { get; set; }
 
 		[Required]
-		[StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 1)]
+		[StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.",
+			MinimumLength = 1)]
 		[Display(Name = "Last Name")]
 		public string LastName { get; set; }
 
 		[Required]
-		[StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 1)]
+		[StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.",
+			MinimumLength = 1)]
 		[Display(Name = "Display Name")]
 		public string DisplayName { get; set; }
 
